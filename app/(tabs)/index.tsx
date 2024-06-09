@@ -1,23 +1,58 @@
-import { StyleSheet, Platform, ScrollView, SafeAreaView } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { MultiSelect } from "@/components/multiSelect";
+import { useCallback, useEffect, useState } from "react";
 
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+const initialPage = "https://rickandmortyapi.com/api/character";
+
+const debounce = <T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+) => {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  return (...args: Parameters<T>) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
 
 export default function HomeScreen() {
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [value, setValue] = useState<string>("");
+
+  const fetchPage = async (url: string) => {
+    if (loading) return;
+
+    setLoading(true);
+    const response = await fetch(url);
+    const responseJson = await response.json();
+
+    setItems(responseJson.results);
+
+    setLoading(false);
+  };
+
+  const debouncedFetchPage = useCallback(
+    debounce((url: string) => {
+      fetchPage(url);
+    }, 500),
+    []
+  );
+
+  useEffect(() => {
+    const newUrl = initialPage + "/?name=" + value;
+    const fetchUrl = value ? newUrl : initialPage;
+    debouncedFetchPage(fetchUrl);
+  }, [value, debouncedFetchPage]);
+
   return (
     <SafeAreaView>
       <ScrollView style={styles.container}>
-        <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">Welcome!</ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-          <ThemedText>
-            Edit{" "}
-            <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText>{" "}
-            to see changes.
-          </ThemedText>
-        </ThemedView>
+        <MultiSelect items={items} value={value} setValue={setValue} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -27,13 +62,5 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     height: "100%",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
   },
 });
