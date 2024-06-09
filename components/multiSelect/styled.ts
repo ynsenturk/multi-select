@@ -3,6 +3,8 @@ import styled from "styled-components/native";
 export const Container = styled.View`
   align-items: center;
   row-gap: 10px;
+  flex: 1;
+  margin-bottom: 20px;
 `;
 
 export const Input = styled.View`

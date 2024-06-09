@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, SafeAreaView } from "react-native";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 import { MultiSelect } from "@/components/multiSelect";
 import { useCallback, useEffect, useState } from "react";
 
@@ -51,9 +51,9 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView>
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <MultiSelect items={items} value={value} setValue={setValue} />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

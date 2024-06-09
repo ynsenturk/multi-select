@@ -47,10 +47,11 @@ export const MultiSelect: React.FC<IMultiSelect.Props> = ({
       <S.Input>
         <View
           style={{
-            maxWidth: 150,
+            maxWidth: 180,
             flexDirection: "row",
             flexWrap: "wrap",
             gap: 5,
+            marginRight: 10,
           }}
         >
           {checkedItems.map((item) => (

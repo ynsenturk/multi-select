@@ -1,6 +1,7 @@
 import { View, Image, StyleSheet } from "react-native";
 import { ICharacterListItem } from "./CharacterLıstItem";
 import { ThemedText } from "../ThemedText";
+import * as S from "./styled";
 
 type CharacterListItem = {
   character: ICharacterListItem.Character;
@@ -16,11 +17,11 @@ export const CharacterListItem: React.FC<CharacterListItem> = ({
   const endIndex = startIndex !== -1 ? startIndex + valueLower.length : -1;
 
   return (
-    <View style={styles.container}>
+    <S.Container>
       <View>
         <Image source={{ uri: character.image }} style={styles.image} />
       </View>
-      <View style={styles.info}>
+      <S.Info>
         <ThemedText style={styles.name}>
           {startIndex > 0 && character.name.substring(0, startIndex)}
           {startIndex !== -1 && (
@@ -34,18 +35,11 @@ export const CharacterListItem: React.FC<CharacterListItem> = ({
         <ThemedText
           style={styles.episode}
         >{`${character.episode.length} Episodes`}</ThemedText>
-      </View>
-    </View>
+      </S.Info>
+    </S.Container>
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    columnGap: 10,
-  },
-  info: {
-    alignItems: "flex-start",
-  },
   name: {
     fontSize: 18,
     fontWeight: "600",
