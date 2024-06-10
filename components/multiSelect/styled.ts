@@ -20,11 +20,11 @@ export const Input = styled.View`
 
 export const OpenButton = styled.View``;
 
-export const Selectable = styled.TouchableOpacity`
+export const Selectable = styled.TouchableOpacity<{ lastItem?: boolean }>`
   flex-direction: row;
   align-items: center;
   padding: 15px;
-  border-bottom-width: 0.2px;
+  border-bottom-width: ${({ lastItem }) => (lastItem ? 0 : 0.2)}px;
   border-bottom-color: "#94a3b8";
   column-gap: 10px;
 `;

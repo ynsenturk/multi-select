@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, TextInput, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesome6, Entypo, Feather } from "@expo/vector-icons";
 
 import { IMultiSelect } from "./MultiSelect";
@@ -8,20 +8,34 @@ import { CharacterListItem } from "../characterListItem";
 import { ThemedText } from "../ThemedText";
 
 export const MultiSelect: React.FC<IMultiSelect.Props> = ({
-  items,
+  items = [],
   loading,
   value,
   setValue,
 }) => {
   const [checkedItems, setCheckedItems] = useState<IMultiSelect.Item[]>([]);
+  const [isLoading, setIsLoading] = useState(loading);
 
-  const renderItem = ({ item }: { item: IMultiSelect.Item }) => {
+  useEffect(() => {
+    if (items?.length > 0) {
+      setIsLoading(false);
+    }
+  }, [items]);
+
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: IMultiSelect.Item;
+    index: number;
+  }) => {
     const isChecked = checkedItems.some(
       (checkedItem) => checkedItem.id === item.id
     );
 
     return (
       <S.Selectable
+        lastItem={index === items?.length - 1}
         onPress={() => {
           setCheckedItems((prevItems) => {
             if (prevItems.some((checkedItem) => checkedItem.id === item.id)) {
@@ -92,7 +106,7 @@ export const MultiSelect: React.FC<IMultiSelect.Props> = ({
           borderColor: "#94a3b8",
           borderRadius: 15,
         }}
-        ListFooterComponent={() => loading && <ActivityIndicator />}
+        ListFooterComponent={() => isLoading && <ActivityIndicator />}
         initialNumToRender={3}
       />
     </S.Container>

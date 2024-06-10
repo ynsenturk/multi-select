@@ -52,7 +52,7 @@ export default function HomeScreen() {
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <MultiSelect items={items} value={value} setValue={setValue} />
+        <MultiSelect items={items} value={value} setValue={setValue} loading />
       </View>
     </SafeAreaView>
   );
